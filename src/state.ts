@@ -93,6 +93,14 @@ export interface State<T> {
      * @see SubscribeFn
      */
     subscribe: SubscribeFn;
+
+    /**
+     * Returns the unproxied state object
+     *
+     * @returns {T}
+     * @memberof State
+     */
+    target(): T;
 }
 
 function postpone<T>(
@@ -185,28 +193,33 @@ export function createState<T>(options?: StateOptions): State<T> {
         }
     }
 
-    return {
-        state: watch(stateValue, (prop, value, previousValue) => {
-            Object.keys(allSubscribers).forEach(
-                (key: keyof typeof allSubscribers) => {
-                    if (key === allProp && !includes(prop, '.')) {
-                        notify(allSubscribers[key], prop, value, previousValue);
-                    } else if (key === prop) {
-                        notify(allSubscribers[key], prop, value, previousValue);
-                    } else if (includes(key.toString(), prop)) {
-                        const newProp = key.toString().replace(`${prop}.`, '');
+    const stateObj = watch(stateValue, (prop, value, previousValue) => {
+        Object.keys(allSubscribers).forEach(
+            (key: keyof typeof allSubscribers) => {
+                if (key === allProp && !includes(prop, '.')) {
+                    notify(allSubscribers[key], prop, value, previousValue);
+                } else if (key === prop) {
+                    notify(allSubscribers[key], prop, value, previousValue);
+                } else if (includes(key.toString(), prop)) {
+                    const newProp = key.toString().replace(`${prop}.`, '');
 
-                        notify(
-                            allSubscribers[key],
-                            key as string,
-                            get(value, newProp),
-                            get(previousValue, newProp),
-                        );
-                    }
-                },
-            );
-        }) as T,
+                    notify(
+                        allSubscribers[key],
+                        key as string,
+                        get(value, newProp),
+                        get(previousValue, newProp),
+                    );
+                }
+            },
+        );
+    });
+
+    return {
+        state: stateObj as T,
         subscribe,
+        target() {
+            return watch.target(stateObj);
+        },
     };
 }
 
