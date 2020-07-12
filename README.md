@@ -51,6 +51,63 @@ subscribe((value, prop) => {
 state.test = 'Hello world!';
 ```
 
+## Batch Updates
+
+Subscriber calls are debounced by default, so synchronous calls to change state will be automatically batched. However, if you have multiple asynchronous updates to make to state and only want to call listeners after those updates have been made, you can do the following:
+
+```ts
+import tates from 'tates';
+
+const { state, subscribe, target } = tates();
+
+subscribe((value, prop) => {
+    console.log(`Property ${prop} set to: ${value}`);
+}, 'test');
+
+const stateTarget = target();
+
+// ...asynchronous calls that update stateTarget
+
+// Copy paths over from stateTarget to trigger updates
+state.test = stateTarget.test;
+```
+
+## Getting Unproxied State
+
+Sometimes you want to get a value on state and work with it without triggering any further updates. For that you can use the following code:
+
+```ts
+import tates from 'tates';
+
+const { state, subscribe, clone } = tates();
+
+subscribe((value, prop) => {
+    console.log(`Property ${prop} set to: ${value}`);
+}, 'test.message');
+
+state.test = {
+    message: 'Hello World!'
+};
+
+const stateClone = clone(); // { test: { message: 'Hello World!' } }
+const testClone = clone('test'); // { message: 'Hello World!' }
+const messageClone = clone('test.message'); // 'Hello World!'
+
+state.test = 'Goodbye!';
+
+console.log(state): // { test: { message: 'Goodbye!' } }
+console.log(stateClone); // { test: { message: 'Hello World!' } }
+console.log(testClone); // { message: 'Hello World!' }
+console.log(messageClone); // 'Hello World!'
+
+testClone.message = 'Goodbye World!';
+
+console.log(state): // { test: 'Goodbye!' }
+console.log(stateClone); // { test: { message: 'Hello World!' } }
+console.log(testClone); // { message: 'Goodbye World!' }
+console.log(messageClone); // 'Hello World!'
+```
+
 ## Configuration Options
 
 You can configure your state observer with the following options:

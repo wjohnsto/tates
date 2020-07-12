@@ -3,6 +3,7 @@
  * others to subscribe for state updates.
  */
 import debounce from 'lodash/debounce';
+import cloneDeep from 'lodash/cloneDeep';
 import defaults from 'lodash/defaults';
 import get from 'lodash/get';
 import includes from 'lodash/includes';
@@ -97,12 +98,24 @@ export interface State<T> {
     /**
      * Returns the unproxied state object. Useful for working with state modifications without
      * triggering multiple subscriber calls. Changes to the value returned from this function
-     * will not trigger any subscriber calls.
+     * will not trigger any subscriber calls, but they will update the state value. If you want to
+     * trigger a state update after making multiple changes, make sure you set the root properties on
+     * state that were changed.
      *
      * @returns {T}
      * @memberof State
      */
     target(): T;
+
+    /**
+     * Returns a unique copy of the state object at the desired property path. You can modify this
+     * value and it will not affect state or trigger any subscriber calls. Similar to target, except
+     * the values on state will remain unchanged if you modify the return value from this function call.
+     *
+     * @returns {any}
+     * @memberof State
+     */
+    clone(prop?: string): any;
 }
 
 function postpone<T>(
@@ -221,6 +234,14 @@ export function createState<T>(options?: StateOptions): State<T> {
         subscribe,
         target() {
             return watch.target(stateObj);
+        },
+        clone(prop?: string) {
+            let path = 'target';
+            if (isString(prop)) {
+                path = `${path}.${prop}`;
+            }
+
+            return cloneDeep(get({ target: watch.target(stateObj) }, path));
         },
     };
 }
