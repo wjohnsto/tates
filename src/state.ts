@@ -95,7 +95,9 @@ export interface State<T> {
     subscribe: SubscribeFn;
 
     /**
-     * Returns the unproxied state object
+     * Returns the unproxied state object. Useful for working with state modifications without
+     * triggering multiple subscriber calls. Changes to the value returned from this function
+     * will not trigger any subscriber calls.
      *
      * @returns {T}
      * @memberof State
