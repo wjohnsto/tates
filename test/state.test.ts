@@ -1,8 +1,8 @@
-import { createState } from '../src/';
+import tates from '../src';
 import noop from 'lodash/noop';
 
 test('State subscribe should debounce for subsequent calls', (done) => {
-    const { state, subscribe } = createState<{ test: any; }>();
+    const { state, subscribe } = tates<{ test: any; }>();
     const handler = jest.fn(noop);
     const handler2 = jest.fn(noop);
 
@@ -39,7 +39,7 @@ test('State subscribe should debounce for subsequent calls', (done) => {
 });
 
 test('State subscribe should honor unsubscribe', (done) => {
-    const { state, subscribe } = createState<{ test: any; }>();
+    const { state, subscribe } = tates<{ test: any; }>();
     const handler = jest.fn(noop);
     const handler2 = jest.fn(noop);
 
@@ -71,7 +71,7 @@ test('State subscribe should honor unsubscribe', (done) => {
 });
 
 test('State subscribe should allow no debounce and notify for every state update', (done) => {
-    const { state, subscribe } = createState<{ test: any; }>({
+    const { state, subscribe } = tates<{ test: any; }>({
         debounce: false,
     });
     const handler = jest.fn(noop);
@@ -114,7 +114,7 @@ test('State subscribe should allow no debounce and notify for every state update
 });
 
 test('State subscribe should honor unsubscribing with no debounce', (done) => {
-    const { state, subscribe } = createState<{ test: any; }>({
+    const { state, subscribe } = tates<{ test: any; }>({
         debounce: false,
     });
     const handler = jest.fn(noop);

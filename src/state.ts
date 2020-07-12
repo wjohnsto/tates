@@ -34,7 +34,7 @@ export interface StateOptions {
     debounce?: boolean;
     /**
      * By default subscriber calls will be debounced for performance. You can specify the
-     * amount of time to debounce calls over this object. The default value is 10.
+     * amount of time in milliseconds to debounce calls over this object. The default value is 10.
      *
      * @type {number}
      * @memberof StateOptions
