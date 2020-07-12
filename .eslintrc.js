@@ -24,23 +24,10 @@ module.exports = {
     rules: {
         // Place to specify ESLint rules. Can be used to overwrite rules specified from the extended configs
         // e.g. "@typescript-eslint/explicit-function-return-type": "off",
-        '@typescript-eslint/require-await': 0,
-        'no-param-reassign': 0,
-        '@typescript-eslint/no-floating-promises': 0,
         '@typescript-eslint/no-unsafe-return': 0,
         '@typescript-eslint/no-unsafe-call': 0,
         '@typescript-eslint/no-unsafe-member-access': 0,
         '@typescript-eslint/no-unsafe-assignment': 0,
-        '@typescript-eslint/camelcase': 0,
-        'consistent-return': 0,
-        'class-methods-use-this': 0,
-        'max-classes-per-file': 0,
-        'import/named': 0,
-        '@typescript-eslint/unbound-method': 0,
-        'import/prefer-default-export': 0,
-        'simple-import-sort/sort': 'error',
-        'import/export': 0,
-        '@typescript-eslint/no-empty-interface': 0,
     },
     settings: {
     },

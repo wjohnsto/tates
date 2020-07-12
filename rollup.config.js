@@ -9,7 +9,7 @@ export default {
         format: 'cjs',
         exports: 'named',
     },
-    external: (id) => /^mintility/.test(id),
+    external: (id) => /^lodash/.test(id),
     plugins: [resolve(), commonjs(), terser({
         module: true
     })]
