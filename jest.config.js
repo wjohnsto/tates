@@ -16,12 +16,4 @@ module.exports = {
             tsConfig: './test/tsconfig.json'
         }
     },
-    transformIgnorePatterns: [
-        "/node_modules/(?!mintility)"
-    ],
-    transform: {
-        '^.+\\.tsx?$': 'ts-jest',
-        '^.+\\.jsx?$': 'babel-jest',
-        '^mintility\/': 'babel-jest',
-    }
 };

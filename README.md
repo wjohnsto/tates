@@ -1,3 +1,3 @@
-# some-utils
+# tates
 
-A small, TypeScript-enabled library of utility functions
+A library for creating and subscribing to changes on a state object
