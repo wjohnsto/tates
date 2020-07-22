@@ -180,12 +180,18 @@ export function createState<T>(options?: StateOptions): State<T> {
             subscriber = postpone(subscriber);
         }
 
-        const index = subscribers.push(subscriber) - 1;
+        subscribers.push(subscriber);
 
         subscriber(get(stateValue, prop), prop);
 
         return () => {
             subscribed = false;
+            const index = subscribers.indexOf(subscriber);
+
+            if (index === -1) {
+                return;
+            }
+
             subscribers[index] = noop;
             subscribers.splice(index, 1);
         };
