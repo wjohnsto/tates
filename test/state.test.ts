@@ -297,3 +297,62 @@ test('Cloning different values on state should end up in multiple unique copies'
         done();
     }, 100);
 });
+
+
+test('Unsubscribing should always work and respect order', (done) => {
+    const { state, subscribe } = tates<any>();
+    const handler = jest.fn(noop);
+    const handler2 = jest.fn(noop);
+    const handler3 = jest.fn(noop);
+    const handler4 = jest.fn(noop);
+
+    const unsubscribe = subscribe(handler, 'test');
+    const unsubscribe2 = subscribe(handler2, 'test.foo');
+    const unsubscribe3 = subscribe(handler3, 'test.foo.bar');
+    const unsubscribe4 = subscribe(handler4, 'test.foo.bar.baz');
+
+    const test = {
+        foo: {
+            bar: {
+                baz: 2
+            },
+        },
+    };
+
+    state.test = test;
+
+    setTimeout(() => {
+        unsubscribe();
+        unsubscribe2();
+        unsubscribe3();
+        state.test = {
+            foo: {
+                bar: {
+                    baz: 4,
+                },
+            },
+        };
+
+        setTimeout(() => {
+            expect(handler).toHaveBeenCalledTimes(1);
+            expect(handler2).toHaveBeenCalledTimes(1);
+            expect(handler3).toHaveBeenCalledTimes(1);
+            expect(handler4).toHaveBeenCalledTimes(2);
+
+            unsubscribe4();
+
+            state.test = {
+                foo: {
+                    bar: {
+                        baz: 6,
+                    },
+                },
+            };
+
+            setTimeout(() => {
+                expect(handler4).toHaveBeenCalledTimes(2);
+                done();
+            }, 200);
+        }, 200);
+    }, 200);
+});
