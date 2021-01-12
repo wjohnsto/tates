@@ -10,7 +10,12 @@ export default {
         exports: 'named',
     },
     external: (id) => /^lodash/.test(id),
-    plugins: [resolve(), commonjs(), terser({
+    plugins: [resolve({
+        customResolveOptions: {
+            // @ts-ignore
+            isRequire: true,
+        }
+    }), commonjs(), terser({
         module: true
     })]
 };
