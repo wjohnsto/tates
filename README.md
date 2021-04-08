@@ -1,5 +1,7 @@
 # tates
 
+[![Version](https://img.shields.io/npm/v/tates.svg)](https://npmjs.org/package/tates)
+
 The **primary objective** of this library is to wrap the [Proxy API](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Proxy) and allow you to create objects to which you can subscribe for updates.
 
 # Table of Contents
