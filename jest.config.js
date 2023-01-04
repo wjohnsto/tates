@@ -1,4 +1,4 @@
-module.exports = {
+export default {
     preset: 'ts-jest',
     testEnvironment: 'node',
     testRegex: '(/__tests__/.*|\\.(test|spec))\\.ts$',
@@ -11,9 +11,4 @@ module.exports = {
         'src/*.{ts,tsx}',
         '!**/node_modules/**',
     ],
-    globals: {
-        'ts-jest': {
-            tsConfig: './test/tsconfig.json'
-        }
-    },
 };
